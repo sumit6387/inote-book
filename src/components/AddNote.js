@@ -1,8 +1,11 @@
 import React, { useContext, useState } from "react";
 import noteContext from "../context/notes/noteContext";
+import alertContext from "../context/alert/alertContext";
 
 function AddNote() {
   const context = useContext(noteContext);
+  const alertCntx = useContext(alertContext);
+  const { setAlert } = alertCntx;
   const { addNote } = context;
   const [note, setNote] = useState({ title: "", description: "", tag: "" });
   const onChange = (event) => {
@@ -13,6 +16,8 @@ function AddNote() {
     event.preventDefault();
     console.log(note);
     addNote(note);
+    setAlert({ alertType: "success", msg: "Note added successfully" });
+    setNote({ title: "", description: "", tag: "" });
   };
   return (
     <div className="container my-3">
@@ -30,6 +35,10 @@ function AddNote() {
                 id="title"
                 onChange={onChange}
                 name="title"
+                placeholder="Enter title"
+                minLength={5}
+                value={note.title}
+                required
               />
             </div>
             <div className="mb-3">
@@ -42,6 +51,10 @@ function AddNote() {
                 id="description"
                 onChange={onChange}
                 name="description"
+                placeholder="Enter description"
+                minLength={5}
+                value={note.description}
+                required
               />
             </div>
             <div className="mb-3">
@@ -54,12 +67,17 @@ function AddNote() {
                 id="tag"
                 onChange={onChange}
                 name="tag"
+                placeholder="Enter tag"
+                value={note.tag}
+                minLength={5}
+                required
               />
             </div>
             <button
               type="submit"
               className="btn btn-primary"
               onClick={handleClick}
+              disabled={note.title.length < 5 || note.description.length < 5}
             >
               Add Note
             </button>

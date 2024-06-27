@@ -1,20 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import alertContext from "../context/alert/alertContext";
 
-function Alert(props) {
-  const { description, success } = props;
+function Alert() {
+  const context = useContext(alertContext);
+  const { alert } = context;
   return (
-    <div
-      class={`alert alert-${success} alert-dismissible fade show`}
-      role="alert"
-    >
-      <strong>{success}!</strong> {description}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
+    <>
+      {alert.alertType && alert.msg && (
+        <div className={`alert alert-${alert.alertType} mt-2`} role="alert">
+          <strong>{alert.alertType}!</strong> {alert.msg}
+        </div>
+      )}
+    </>
   );
 }
 

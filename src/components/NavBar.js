@@ -6,12 +6,16 @@ function NavBar() {
   useEffect(() => {
     console.log(location);
   }, [location]);
+  const handleLogout = () => {
+    localStorage.setItem("token", "");
+    window.location.href = "/login";
+  };
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            Navbar
+            INotebook
           </a>
           <button
             className="navbar-toggler"
@@ -48,17 +52,28 @@ function NavBar() {
                 </a>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
+            {!localStorage.getItem("token") ? (
+              <>
+                <form className="d-flex" role="search">
+                  <input
+                    className="form-control me-2"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                  />
+                </form>
+                <a href="/login" className="btn btn-primary mx-2">
+                  Login
+                </a>
+                <a href="/signup" className="btn btn-primary">
+                  Signup
+                </a>
+              </>
+            ) : (
+              <button onClick={handleLogout} className="btn btn-primary">
+                Logout
               </button>
-            </form>
+            )}
           </div>
         </div>
       </nav>
